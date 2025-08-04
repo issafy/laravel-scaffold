@@ -1,0 +1,44 @@
+# Composer
+/vendor
+composer.phar
+composer.lock
+
+# PHP
+.phpunit
+.php-cs-fixer.cache
+.phpstorm.meta.php
+
+# Testing
+.phpunit.result.cache
+tests/fixtures/*
+!tests/fixtures/.gitkeep
+
+# IDE and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# Build and Coverage
+build/
+coverage/
+clover.xml
+coverage.xml
+gcov
+*.gcda
+*.gcno
+*.gcov
+
+# Logs
+*.log
+storage/logs/*.log
+
+# Environment
+.env
+.env.local
+.env.php
+.DS_Store

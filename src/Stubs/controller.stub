@@ -1,0 +1,49 @@
+<?php
+
+namespace {{namespace}};
+
+use {{modelNamespace}}\{{model}};
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class {{controller}} extends Controller
+{
+    public function index()
+    {
+        return {{model}}::all();
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            {{validation_rules}}
+        ]);
+
+        ${{modelVar}} = {{model}}::create($validated);
+
+        return response()->json(${{modelVar}}, 201);
+    }
+
+    public function show({{model}} ${{modelVar}})
+    {
+        return ${{modelVar}};
+    }
+
+    public function update(Request $request, {{model}} ${{modelVar}})
+    {
+        $validated = $request->validate([
+            {{validation_rules}}
+        ]);
+
+        ${{modelVar}}->update($validated);
+
+        return response()->json(${{modelVar}}, 200);
+    }
+
+    public function destroy({{model}} ${{modelVar}})
+    {
+        ${{modelVar}}->delete();
+
+        return response()->noContent();
+    }
+}
