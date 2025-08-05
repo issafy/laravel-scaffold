@@ -54,6 +54,7 @@ A Laravel package to streamline resource creation: model, migration, controller,
 - Auto-generates missing model, controller, and route
 - Reuses `make:model-with-fields` logic
 - Skips existing models
+- **Never modifies migration files** (read-only)
 
 #### ✅ Sync Options
 - `--dry-run`  
@@ -71,6 +72,7 @@ Set polling interval in seconds (default: 1)
 - Stubs in `src/Stubs/` (internal)
 - Configurable via `config/scaffold.php`
 - Uses Laravel conventions and filesystem tools
+- **Read-only migration parsing** — no changes ever made to migration files
 
 ## Limitations
 - Optimized for MySQL (boolean defaults, etc.)

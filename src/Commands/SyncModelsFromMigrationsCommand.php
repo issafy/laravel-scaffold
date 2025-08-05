@@ -29,6 +29,10 @@ class SyncModelsFromMigrationsCommand extends Command
 
     public function handle()
     {
+        // 🔒 This command only reads migrations — it NEVER modifies, deletes, or renames them.
+        // All changes are limited to generating models, controllers, and route registration.
+
+
         if ($this->option('watch')) {
             $this->watch();
             return;
@@ -64,6 +68,11 @@ class SyncModelsFromMigrationsCommand extends Command
             $fields = $this->parseMigrationFields($migration['file'], $tableName, $this->option('soft-deletes'));
             $fieldString = $this->formatFieldsForCommand($fields);
 
+            if (empty($fieldString)) {
+                $this->warn("No fields detected in migration for {$tableName}. Skipping {$modelName}.");
+                return;
+            }
+
             if ($this->option('dry-run')) {
                 $this->line("🔹 Would scaffold: <info>{$modelName}</info>");
                 $this->line("   Fields: {$fieldString}");
@@ -77,6 +86,13 @@ class SyncModelsFromMigrationsCommand extends Command
                 $this->info("✅ Scaffolded: {$modelName}");
                 $this->hasChanges = true;
             }
+
+            $original = $migration['up'];
+            $path = $migration['file'];
+
+            // ... parsing and scaffolding ...
+
+            $this->assertMigrationNotModified($path, $original);
         }
 
         if ($this->option('dry-run') && ! $this->hasChanges) {
@@ -270,5 +286,14 @@ class SyncModelsFromMigrationsCommand extends Command
         }
 
         return implode(',', $parts);
+    }
+
+
+    protected function assertMigrationNotModified(string $file, string $originalContent): void
+    {
+        $currentContent = $this->files->get($file);
+        if ($originalContent !== $currentContent) {
+            throw new \RuntimeException("Migration was modified during sync: {$file}");
+        }
     }
 }

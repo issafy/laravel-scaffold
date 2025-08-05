@@ -314,7 +314,12 @@ class MakeModelWithFieldsCommand extends Command
         $fields = $this->option('fields');
 
         if (!$fields) {
-            return $this->promptForFields();
+            if ($this->input->isInteractive()) {
+                return $this->promptForFields();
+            } else {
+                $this->error("No fields provided and running in non-interactive mode.");
+                return Command::FAILURE;
+            }
         }
 
         $parsed = [];
